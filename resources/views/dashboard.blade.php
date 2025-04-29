@@ -141,7 +141,7 @@
             width: 100%;
             text-align: center;
         }
-        
+
     </style>
 </head>
 <body>
@@ -184,6 +184,13 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="mb-0">Daftar Obat</h2>
             </div>
+
+            <form method="GET" action="{{ route('dashboard') }}#products" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Cari obat..." value="{{ request('search') }}">
+                    <button class="btn btn-outline-secondary" type="submit">Cari</button>
+                </div>
+            </form>
 
             <div class="row">
                 @foreach ($products as $product)

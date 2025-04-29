@@ -6,9 +6,19 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all(); // Ambil semua produk dari database
+        $query = Product::query();
+
+        if ($request->has('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('description', 'like', '%' . $request->search . '%');
+            }); 
+        }
+
+        $products = $query->get();
+
         return view('dashboard', compact('products'));
     }
 }
