@@ -1,48 +1,56 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Tambah Obat</h2>
-            <a href="{{ route('home') }}" class="btn btn-dark">
-                <i class="fas fa-arrow-left"></i> Kembali
-            </a>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="mb-0 fw-bold text-primary"><i class="bi bi-capsule me-2"></i> Tambah Obat</h2>
+                        <a href="{{ route('home') }}" class="btn btn-outline-secondary rounded-pill">
+                            <i class="bi bi-arrow-left"></i> Kembali
+                        </a>
+                    </div>
+
+                    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">📝 Nama Obat</label>
+                            <input type="text" name="name" class="form-control rounded-3 shadow-sm" placeholder="Contoh: Paracetamol" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">📃 Deskripsi</label>
+                            <textarea name="description" rows="3" class="form-control rounded-3 shadow-sm" placeholder="Tuliskan deskripsi singkat..." required></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">💰 Harga (Rp)</label>
+                            <input type="number" name="price" class="form-control rounded-3 shadow-sm" placeholder="Contoh: 10000" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">📦 Stok</label>
+                            <input type="number" name="stock" class="form-control rounded-3 shadow-sm" placeholder="Contoh: 5" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">🖼️ Gambar Produk</label>
+                            <input type="file" name="image" class="form-control rounded-3 shadow-sm">
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-3 shadow-sm">
+                                <i class="bi bi-save me-2"></i> Simpan Obat
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
     </div>
-    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-
-        <!-- Nama Obat -->
-        <div class="mb-3">
-            <label class="form-label">Nama Obat</label>
-            <input type="text" name="name" class="form-control" required>
-        </div>
-
-        <!-- Deskripsi -->
-        <div class="mb-3">
-            <label class="form-label">Deskripsi</label>
-            <textarea name="description" class="form-control" rows="3" required></textarea>
-        </div>
-
-        <!-- Harga -->
-        <div class="mb-3">
-            <label class="form-label">Harga</label>
-            <input type="number" name="price" class="form-control" required>
-        </div>
-
-        <!-- Stok -->
-        <div class="mb-3">
-            <label class="form-label">Stok</label>
-            <input type="number" name="stock" class="form-control" required>
-        </div>
-
-        <!-- Gambar Produk -->
-        <div class="mb-3">
-            <label class="form-label">Gambar Produk</label>
-            <input type="file" name="image" class="form-control">
-        </div>
-
-        <!-- Tombol Simpan -->
-        <button type="submit" class="btn btn-outline-dark w-100 py-3 fs-5 mt-4 mb-5">Simpan</button>
-    </form>
 </div>
 @endsection

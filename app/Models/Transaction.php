@@ -10,10 +10,17 @@ class Transaction extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['buyer_name', 'product_id', 'quantity', 'total_price', 'amount_paid'];
+    protected $fillable = [
+        'buyer_name',
+        'total_price',
+        'amount_paid',
+        'payment_method',
+        'change',
+        'status'
+    ];
 
     public function product()
     {
-        return $this->belongsTo(Product::class)->withTrashed();
+        return $this->belongsToMany(Product::class)->withPivot('quantity');
     }
 }

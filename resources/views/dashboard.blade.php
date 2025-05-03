@@ -7,6 +7,8 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <style>
         body {
@@ -15,7 +17,7 @@
         }
         .navbar-brand {
             color: black !important;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-shadow: 2px 2px 4px rgba(123, 123, 123, 0.5);
         }
         .navbar-brand:hover {
             color: gray !important;
@@ -30,12 +32,34 @@
         .navbar .nav-link {
             color: black !important;
             transition: background-color 0.3s ease;
-            text-shadow: 2px 2px 4px rgba(70, 70, 70, 0.5);
+            text-shadow: 2px 2px 4px rgba(123, 123, 123, 0.5);
         }
         .navbar .nav-link:hover {
             background-color: rgba(255, 255, 255, 0.2) !important;
             color: rgb(226, 103, 138) !important;
         }
+
+        .btn-pink {
+            background-color: #c0335e; 
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 16px 18px; 
+            border-radius: 999px; 
+            width: 200px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+            transition: background-color 0.3s ease;
+            border: none;
+        }
+
+        .btn-pink:hover {
+        background-color: #ff889c; 
+        }
+
+        .btn-pink:active {
+        background-color: rgb(226, 103, 138) !important; /* Klik lebih gelap lagi */
+        }
+
         header {
             position: relative;
             background-image: url("{{ asset('storage/apotiksehat3.jpg') }}");
@@ -52,23 +76,35 @@
             padding: 0;
             margin-top: 0;
         }
+
         header .overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            pointer-events: none;
         }
+
         header .content {
             position: relative;
             z-index: 2;
             max-width: 600px;
             padding-left: 50px;
         }
+
         header h1 {
-            font-weight: 800;
-            text-shadow: 2px 2px 4px rgba(52, 52, 52, 0.7);
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(158, 158, 158, 0.7);
         }
+
+        .lead {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400; /* atau 600 kalau mau lebih tebal */
+            font-size: 1.2rem; /* bisa kamu sesuaikan */
+            color:rgb(45, 45, 45); /* ganti dengan warna yang diinginkan */
+        }
+
         .card {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, background-color 0.3s;
@@ -129,9 +165,9 @@
             text-align: center;
             align-items: center;
             justify-content: center;
-            background-color: rgb(226, 103, 138);
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            color: white;
+            background-color:rgb(255, 226, 231);
+            text-shadow: 2px 2px 4px rgba(172, 172, 172, 0.5);
+            color: #c0335e;
             padding: 10px 0;
             height: 50px;
         }
@@ -156,14 +192,34 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-black" href="#dashboard">Beranda</a>
+                        <a class="nav-link text-black" href="#">Beranda</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-black" href="#products">Produk</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-black" href="{{ route('login') }}">Logout</a>
+                        <a class="nav-link text-black" href="{{ route('transactions.index') }}">Checkout</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-black" href="#">FAQ</a>
+                    </li>
+                    @auth
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center text-black" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}" alt="Avatar" width="30" height="30" class="rounded-circle me-2">
+                            {{ Auth::user()->name }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ route('profile.show') }}">Lihat Profil</a></li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-danger">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    @endauth
                 </ul>
             </div>
         </div>
@@ -174,7 +230,8 @@
         <div class="overlay"></div>
         <div class="container">
             <h1>Apotek Sehat Sentra</h1>
-            <p class="lead">Melengkapi Suplemen Harian Anda!</p>
+            <p class="lead">Lengkapi Suplemen Harian Anda untuk Kesehatan yang Optimal!</p>
+            <a href="#products" class="btn btn-pink">Lihat Produk</a>
         </div>
     </header>
 
@@ -199,7 +256,7 @@
                         <img src="{{ $product->image_url ? asset('storage/' . $product->image_url) : asset('images/no-image.png') }}" class="card-img-top" alt="{{ $product->name }}">
                         <div class="card-body d-flex flex-column">
                             <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h5 class="card-title mb-0">{{ $product->name }}</h5>
+                                <h5 class="card-title fw-bold mb-0">{{ $product->name }}</h5>
                                 <p class="fw-bold mb-0">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                             </div>
                             <p class="card-text">{{ Str::limit($product->description, 60) }}</p>
@@ -212,13 +269,10 @@
                                     </button>
 
                                     <!-- Button Beli -->
-                                    <form action="{{ route('transactions.store') }}" method="POST" class="w-50">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <button type="submit" class="btn btn-buy w-100">
-                                            Beli Obat
-                                        </button>
-                                    </form>
+
+                                    <a href="{{ route('transactions.checkoutNow', $product->id) }}" class="btn btn-buy w-50">Checkout</a>
+
+
                                 </div>
                             </div>
                         </div>
@@ -237,6 +291,7 @@
                         <img src="{{ $product->image_url ? asset('storage/' . $product->image_url) : asset('images/no-image.png') }}" class="img-fluid mb-3" alt="{{ $product->name }}">
                         <p><strong>Harga:</strong> Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                         <p><strong>Deskripsi:</strong> {{ $product->description }}</p>
+                        <p><strong>Stok:</strong> <span>{{ $product->stock }}</span></p>
                       </div>
                     </div>
                   </div>
@@ -252,10 +307,11 @@
 
     <!-- Footer -->
     <footer class="text-center">
-        <p>&copy; 2025 Apotek Sehat. Semua Hak Dilindungi.</p>
+        <p>&copy; 2025 Apotek Sehat Sentra — Sehat Bersama Kami!</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

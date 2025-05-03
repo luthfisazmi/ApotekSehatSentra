@@ -3,82 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Aplikasi</title>
+    <title>Login - Apotek Sehat Sentra</title>
 
-    {{-- CDN Bootstrap 5 --}}
+    <!-- Bootstrap 5 & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
-        body {
-            overflow: hidden;
-            background-color: #f8f9fa;
+        * {
+            font-family: 'Poppins', sans-serif;
         }
 
-        .login-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        body {
+            background: linear-gradient(135deg, #fff8f9, #fff);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-login {
+            background-color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             width: 100%;
-            max-width: 600px;
+            max-width: 480px;
+        }
+
+        .btn-pink {
+            background-color: #ec4899;
+            color: white;
+            border: none;
+        }
+
+        .btn-pink:hover {
+            background-color: #db2777;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .form-label {
+            font-weight: 500;
+        }
+
+        .small-link {
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
-<div class="login-container">
-    <div class="card shadow-lg border-0 rounded-4 px-4 py-3">
-        <div class="card-header text-center bg-white border-0">
-            <h3 class="fw-bold text-dark">Selamat Datang</h3>
-            <p class="text-muted">Silakan masuk untuk melanjutkan</p>
-        </div>
-
-        <div class="card-body">
-            @if (session('error'))
-                <div class="alert alert-danger">{{ session('error') }}</div>
-            @endif
-
-            <form method="POST" action="{{ route('login') }}">
-                @csrf
-
-                <div class="mb-3">
-                    <label for="email" class="fw-semibold">Email Address</label>
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                           name="email" value="{{ old('email') }}" required autofocus
-                           placeholder="Masukkan email anda"
-                           style="border-radius: 10px; padding: 12px; font-size: 16px;">
-
-                    @error('email')
-                        <span class="text-danger small">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="mb-3">
-                    <label for="password" class="fw-semibold">Password</label>
-                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
-                           name="password" required placeholder="Masukkan password"
-                           style="border-radius: 10px; padding: 12px; font-size: 16px;">
-
-                    @error('password')
-                        <span class="text-danger small">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-dark w-100 fw-semibold py-2" style="border-radius: 10px;">
-                        Login
-                    </button>
-                </div>
-            </form>
-
-            <p class="text-center small">
-                Belum punya akun? <a href="{{ route('register') }}" class="text-primary fw-semibold text-decoration-none">Daftar</a>
-            </p>
-        </div>
+<div class="card-login">
+    <div class="text-center mb-4">
+        <i class="bi bi-capsule-fill fs-1 text-pink" style="color:#ec4899;"></i>
+        <h3 class="fw-bold text-dark mt-2">Halo, Selamat Datang!</h3>
+        <p class="text-muted small">Masuk dulu yuk sebelum belanja obat~</p>
     </div>
+
+    @if (session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+
+    <form method="POST" action="{{ route('login') }}">
+        @csrf
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan email" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password" required>
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-pink fw-semibold py-2">Login</button>
+        </div>
+    </form>
+
+    <p class="text-center small-link mt-3">
+        Belum punya akun?
+        <a href="{{ route('register') }}" class="text-decoration-none fw-semibold text-pink" style="color:#ec4899;">
+            Daftar
+        </a>
+    </p>
 </div>
 
-{{-- Optional JS Bootstrap --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

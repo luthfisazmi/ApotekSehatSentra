@@ -15,7 +15,7 @@
         }
         .navbar-brand {
             color: black !important;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+            text-shadow: 2px 2px 4px rgba(123, 123, 123, 0.5);
         }
 
         .navbar-brand:hover {
@@ -31,7 +31,7 @@
         .navbar .nav-link {
             color: black !important;
             transition: background-color 0.3s ease;
-            text-shadow: 2px 2px 4px rgba(70, 70, 70, 0.5);
+            text-shadow: 2px 2px 4px rgba(123, 123, 123, 0.5);
         }
         .navbar .nav-link:hover {
             background-color: rgba(255, 255, 255, 0.2) !important;
@@ -71,11 +71,20 @@
         }
         header h1 {
             font-weight: 800;
-            text-shadow: 2px 2px 4px rgba(52, 52, 52, 0.7);
+            text-shadow: 2px 2px 4px rgba(148, 148, 148, 0.7);
         }
+
         .p {
-            font-size: 18px;
+            font-size: 20px;
         }
+
+        .lead {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400; /* atau 600 kalau mau lebih tebal */
+            font-size: 1.3rem; /* bisa kamu sesuaikan */
+            color:rgb(45, 45, 45); /* ganti dengan warna yang diinginkan */
+        }
+
         .card {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, background-color 0.3s;
@@ -180,10 +189,7 @@
                     <a class="nav-link text-black" href="#products">Produk</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-black" href="{{ route('transactions.create') }}">Transaksi</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-black" href="{{ route('transactions.index') }}">Riwayat</a>
+                    <a class="nav-link text-black" href="#">Riwayat</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-black" href="{{ route('login') }}">Logout</a>
@@ -197,8 +203,8 @@
     <header class="text-black py-5">
         <div class="overlay"></div> <!-- Overlay Gelap -->
         <div class="container">
-            <h1>Apotek Sehat Sentra</h1>
-            <p class="lead">Melengkapi suplemen harian Anda!</p>
+            <h1>Administrator</h1>
+            <p class="lead">- Apotek Sehat Sentra -</p>
     </header>
 
     <!-- Produk -->
@@ -261,7 +267,7 @@
 
     <!-- Footer -->
     <footer class="text-center">
-        <p>&copy; 2025 Apotek Sehat. Semua Hak Dilindungi.</p>
+        <p>&copy; 2025 Apotek Sehat Sentra — Sehat Bersama Kami!</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

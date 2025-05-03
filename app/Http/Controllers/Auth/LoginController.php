@@ -16,21 +16,27 @@ class LoginController extends Controller
     }
 
     public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required'
+    ]);
 
-        // $credentials = $request->only('email', 'password');
+    // Cek apakah email dan password benar
+    if (Auth::attempt($request->only('email', 'password'))) {
+        $user = Auth::user();
 
-        if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->route('home')->with('success', 'Login berhasil!');
+        // Cek role user dan arahkan sesuai role
+        if ($user->role == 'admin') {
+            return redirect()->route('home')->with('success', 'Login berhasil!');  // Admin diarahkan ke halaman home
+        } else {
+            return redirect()->route('dashboard')->with('success', 'Login berhasil!');  // Pengguna biasa diarahkan ke dashboard
         }
-
-        return back()->withErrors(['email' => 'Email atau password salah!'])->withInput();
-
     }
+
+    return back()->withErrors(['email' => 'Email atau password salah!'])->withInput();
+}
+
 
     public function logout()
     {
@@ -56,6 +62,7 @@ class LoginController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'user', // SET DEFAULT ROLE
         ]);
 
         Auth::login($admin); 

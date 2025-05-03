@@ -1,133 +1,106 @@
-@extends('layouts.app')
+<!-- @extends('layouts.app')
 
 @section('content')
-<style>
-    body {
-        background-color: #f8f9fa;
-    }
-    .transaction-card {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 100%;
-        max-width: 800px; /* Card lebih melebar */
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        background-color: white;
-    }
-</style>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-5">
+                    <h2 class="mb-4 text-center fw-bold">🛒 Checkout Keranjang</h2>
 
-<div class="transaction-card">
-    <div class="text-center mb-3">
-        <h4 class="fw-bold text-dark">Transaksi Baru</h4>
+                    @if(session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
+
+                    @if(session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
+
+                    <form method="POST" action="{{ route('transactions.processCheckout') }}">
+                        @csrf
+
+                        <div class="mb-3">
+                            <label for="buyer_name" class="form-label fw-semibold">Nama Pembeli</label>
+                            <input type="text" name="buyer_name" class="form-control" placeholder="Masukkan nama lengkap" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="buyer_email" class="form-label fw-semibold">Email</label>
+                            <input type="email" name="buyer_email" class="form-control" placeholder="email@domain.com" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="buyer_address" class="form-label fw-semibold">Alamat</label>
+                            <textarea name="buyer_address" class="form-control" rows="3" placeholder="Tulis alamat lengkap pengiriman..." required></textarea>
+                        </div>
+
+                        <h5 class="mb-3 fw-bold">🧾 Daftar Produk</h5>
+                        @forelse ($cart as $id => $item)
+                            <div class="card mb-2 shadow-sm">
+                                <div class="card-body d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ $item['name'] }}</strong><br>
+                                        Harga: Rp{{ number_format($item['price']) }} x {{ $item['quantity'] }}
+                                    </div>
+                                    <a href="{{ route('transactions.checkout', ['id' => $id, 'remove' => 1]) }}" class="btn btn-outline-danger btn-sm">Hapus</a>
+                                </div>
+                            </div>
+                        @empty
+                            <p class="text-muted fst-italic">Keranjang masih kosong.</p>
+                        @endforelse
+
+                        <div class="mb-3 mt-4">
+                            <label for="add_product" class="form-label fw-semibold">Tambah Produk</label>
+                            <select id="add_product" class="form-select" onchange="addToCart(this.value)">
+                                <option value="">-- Pilih Produk --</option>
+                                @foreach (App\Models\Product::all() as $product)
+                                    <option value="{{ $product->id }}">{{ $product->name }} - Rp{{ number_format($product->price) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <h5 class="mt-4">Total Harga: <strong class="text-success">Rp{{ number_format($total) }}</strong></h5>
+
+                        <div class="mb-3 mt-4">
+                            <label for="payment_method" class="form-label fw-semibold">Metode Pembayaran</label>
+                            <select name="payment_method" class="form-select" required onchange="toggleBankInfo(this.value)">
+                                <option value="">-- Pilih --</option>
+                                <option value="transfer">Transfer Bank</option>
+                                <option value="cod">Cash on Delivery (COD)</option>
+                            </select>
+                        </div>
+
+                        <div id="bank-options" class="mb-3" style="display: none;">
+                            <label for="sub_payment" class="form-label fw-semibold">Pilih Bank</label>
+                            <select name="sub_payment" class="form-select">
+                                <option value="BCA">BCA - No. Rek 12345678910 a.n. Luthfi Azmi</option>
+                                <option value="Mandiri">Mandiri - No. Rek 12345678910 a.n. Luthfi Azmi</option>
+                                <option value="BNI">BNI - No. Rek 12345678910 a.n. Luthfi Azmi</option>
+                                <option value="OVO">OVO - No. Rek 12345678910 a.n. Luthfi Azmi</option>
+                            </select>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-bag-check"></i> Selesai Checkout
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    @if(session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
-
-    <form action="{{ route('transactions.store') }}" method="POST">
-        @csrf
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="buyer_name" class="fw-semibold">Nama Pembeli</label>
-                <input type="text" class="form-control @error('buyer_name') is-invalid @enderror"
-                       id="buyer_name" name="buyer_name" required placeholder="Masukkan nama">
-                @error('buyer_name')
-                    <span class="text-danger small">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label for="product_id" class="fw-semibold">Pilih Produk</label>
-                <select name="product_id" id="product_id" class="form-select" required>
-                    <option value="" disabled selected>Pilih Produk</option>
-                    @foreach($products as $product)
-                        <option value="{{ $product->id }}" data-price="{{ $product->price }}">
-                            {{ $product->name }} - Rp {{ number_format($product->price, 0, ',', '.') }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="quantity" class="fw-semibold">Jumlah</label>
-                <input type="number" name="quantity" id="quantity" class="form-control" min="1" value="1" required>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label class="fw-semibold">Total Harga</label>
-                <input type="text" id="total_price" class="form-control" readonly placeholder="Rp 0">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="amount_paid" class="fw-semibold">Uang Pembeli</label>
-                <input type="number" name="amount_paid" id="amount_paid" class="form-control" min="1" required>
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label class="fw-semibold">Kembalian</label>
-                <input type="text" id="change" class="form-control" readonly placeholder="Rp 0">
-                <small id="error_message" class="text-danger d-none">Uang tidak mencukupi!</small>
-            </div>
-        </div>
-
-        <button type="submit" id="submit_btn" class="btn btn-dark w-100 py-2 fs-6 mt-3" disabled>
-            Buat Transaksi
-        </button>
-
-        <div class="text-center mt-3">
-            <a href="{{ route('home') }}" class="text-decoration-none text-muted small">Kembali ke Beranda</a>
-        </div>
-    </form>
 </div>
 
+{{-- Bootstrap JS interactivity --}}
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const productSelect = document.getElementById("product_id");
-        const quantityInput = document.getElementById("quantity");
-        const amountPaidInput = document.getElementById("amount_paid");
-        const totalPriceInput = document.getElementById("total_price");
-        const changeInput = document.getElementById("change");
-        const submitBtn = document.getElementById("submit_btn");
-        const errorMessage = document.getElementById("error_message");
+    function toggleBankInfo(method) {
+        document.getElementById('bank-options').style.display = (method === 'transfer') ? 'block' : 'none';
+    }
 
-        function updateTotalPrice() {
-            const selectedProduct = productSelect.options[productSelect.selectedIndex];
-            const price = selectedProduct.dataset.price ? parseInt(selectedProduct.dataset.price) : 0;
-            const quantity = parseInt(quantityInput.value) || 1;
-            const total = price * quantity;
-            
-            totalPriceInput.value = total > 0 ? "Rp " + total.toLocaleString('id-ID') : "Rp 0";
-            updateChange();
-        }
-
-        function updateChange() {
-            const total = parseInt(totalPriceInput.value.replace(/\D/g, '')) || 0;
-            const amountPaid = parseInt(amountPaidInput.value) || 0;
-            const change = amountPaid - total;
-
-            if (change < 0) {
-                changeInput.value = "Rp 0";
-                errorMessage.classList.remove("d-none");
-                submitBtn.disabled = true;
-            } else {
-                changeInput.value = "Rp " + change.toLocaleString('id-ID');
-                errorMessage.classList.add("d-none");
-                submitBtn.disabled = false;
-            }
-        }
-
-        productSelect.addEventListener("change", updateTotalPrice);
-        quantityInput.addEventListener("input", updateTotalPrice);
-        amountPaidInput.addEventListener("input", updateChange);
-    });
+    function addToCart(productId) {
+        if (!productId) return;
+        window.location.href = `/add-to-cart/${productId}`;
+    }
 </script>
-@endsection
+@endsection -->
