@@ -89,16 +89,9 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
+        $product->delete(); // soft delete
 
-        // Ubah pluck ke 'id' karena itu primary key di Laravel
-        $transactionIds = Transaction::where('product_id', $id)->pluck('id');
-
-        Transaction::whereIn('id', $transactionIds)->delete();
-        Transaction::where('product_id', $id)->delete();
-
-        $product->delete();
-
-        return redirect()->route('products.index')->with('success', 'Produk dan transaksi terkait telah dihapus!');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus!');
     }
 
 

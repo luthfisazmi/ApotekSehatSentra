@@ -189,7 +189,7 @@
                     <a class="nav-link text-black" href="#products">Produk</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-black" href="#">Riwayat</a>
+                    <a class="nav-link text-black" href="{{ route('transactions.showHistory') }}">Riwayat</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-black" href="{{ route('login') }}">Logout</a>

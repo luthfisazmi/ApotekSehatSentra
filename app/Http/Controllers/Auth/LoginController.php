@@ -16,31 +16,28 @@ class LoginController extends Controller
     }
 
     public function login(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required'
-    ]);
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
-    // Cek apakah email dan password benar
-    if (Auth::attempt($request->only('email', 'password'))) {
-        $user = Auth::user();
+        if (Auth::guard('admin')->attempt($request->only('email', 'password'))) {
+            $user = Auth::guard('admin')->user();
 
-        // Cek role user dan arahkan sesuai role
-        if ($user->role == 'admin') {
-            return redirect()->route('home')->with('success', 'Login berhasil!');  // Admin diarahkan ke halaman home
-        } else {
-            return redirect()->route('dashboard')->with('success', 'Login berhasil!');  // Pengguna biasa diarahkan ke dashboard
+            if ($user->role == 'admin') {
+                return redirect()->route('home')->with('success', 'Login berhasil!');
+            } else {
+                return redirect()->route('dashboard')->with('success', 'Login berhasil!');
+            }
         }
+
+        return back()->withErrors(['email' => 'Email atau password salah!'])->withInput();
     }
-
-    return back()->withErrors(['email' => 'Email atau password salah!'])->withInput();
-}
-
 
     public function logout()
     {
-        Auth::logout(); 
+        Auth::guard('admin')->logout(); 
         return redirect('/login');
     }
 
@@ -53,21 +50,19 @@ class LoginController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:admins',
             'password' => 'required|string|min:6|confirmed',
         ]);
-
 
         $admin = Admin::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user', // SET DEFAULT ROLE
+            'role' => 'user', // Default role user
         ]);
 
-        Auth::login($admin); 
+        Auth::guard('admin')->login($admin); 
 
         return redirect()->route('login')->with('success', 'Akun berhasil dibuat. Selamat datang!');
     }
-    
 }

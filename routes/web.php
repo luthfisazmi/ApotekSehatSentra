@@ -50,9 +50,6 @@ Route::get('/add-to-cart/{id}', [TransactionController::class, 'addToCart'])->na
 Route::post('/transactions/update-cart', [TransactionController::class, 'updateCart'])->name('transactions.updateCart');
 
 
-// Kurangi jumlah produk di keranjang
-Route::get('/cart/decrease/{id}', [TransactionController::class, 'decreaseFromCart'])->name('cart.decrease');
-
 // Hapus produk dari keranjang
 Route::delete('/cart/remove/{id}', [TransactionController::class, 'removeFromCart'])->name('transactions.removeFromCart');
 
@@ -64,12 +61,18 @@ Route::post('/checkout', [TransactionController::class, 'processCheckout'])->nam
 
 Route::get('/checkout-now/{id}', [TransactionController::class, 'checkoutNow'])->name('transactions.checkoutNow');
 
+Route::post('/checkout/process', [TransactionController::class, 'processCheckout'])->name('transactions.processCheckout');
 
-// Tampilkan halaman sukses setelah transaksi
-Route::get('/transaction/success', [TransactionController::class, 'success'])->name('transactions.success');
+Route::get('/transaction-success/{transactionId}', [TransactionController::class, 'success'])->name('transactions.success');
+Route::get('/transaction/{transactionId}/invoice-pdf', [TransactionController::class, 'generatePdfInvoice'])->name('transactions.invoicePdf');
 
-// Hapus transaksi (admin)
-Route::delete('/transaction/{id}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
+
+
+Route::get('/transactions/history', [TransactionController::class, 'history'])->name('transactions.history');
+Route::get('/transactions/history', [TransactionController::class, 'showHistory'])->name('transactions.history');
+Route::get('/transactions/history', [TransactionController::class, 'showHistory'])->name('transactions.showHistory');
+
+
 
 // Restore semua transaksi (opsional, admin)
 Route::post('/transactions/restore-all', [TransactionController::class, 'restoreAll'])->name('transactions.restoreAll');

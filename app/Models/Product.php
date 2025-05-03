@@ -12,11 +12,12 @@ class Product extends Model
 
     protected $fillable = ['name', 'description', 'price', 'stock', 'image_url'];
 
-    public function transactions()
+    public function transactionItems()
     {
-        return $this->belongsToMany(Transaction::class)->withPivot('quantity');
+        return $this->hasMany(TransactionItem::class);
     }
 
+    
 
 }
 
