@@ -23,7 +23,7 @@
 
                         <div class="mb-4">
                             <label class="form-label fw-semibold">📃 Deskripsi</label>
-                            <textarea name="description" rows="3" class="form-control rounded-3 shadow-sm" placeholder="Tuliskan deskripsi singkat..." required></textarea>
+                            <textarea name="description" rows="3" class="form-control rounded-3 shadow-sm" placeholder="Deskripsi obat..." required></textarea>
                         </div>
 
                         <div class="mb-4">
@@ -37,7 +37,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label fw-semibold">🖼️ Gambar Produk</label>
+                            <label class="form-label fw-semibold">🖼️ Gambar</label>
                             <input type="file" name="image" class="form-control rounded-3 shadow-sm">
                         </div>
 

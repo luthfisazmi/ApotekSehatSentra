@@ -140,7 +140,7 @@
 
                         <div class="d-grid mt-4">
                             <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="bi bi-bag-check"></i> Selesai Checkout
+                                <i class="bi bi-bag-check"></i>  Checkout
                             </button>
                         </div>
                     </form>

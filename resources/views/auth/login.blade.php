@@ -64,8 +64,8 @@
 <div class="card-login">
     <div class="text-center mb-4">
         <i class="bi bi-capsule-fill fs-1 text-pink" style="color:#ec4899;"></i>
-        <h3 class="fw-bold text-dark mt-2">Halo, Selamat Datang!</h3>
-        <p class="text-muted small">Masuk dulu yuk sebelum belanja obat~</p>
+        <h3 class="fw-bold text-dark mt-2">Apotek Sehat Sentra</h3>
+        <p class="text-muted">Selamat datang!❤️</p>
     </div>
 
     @if (session('error'))

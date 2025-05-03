@@ -63,8 +63,8 @@
         <div class="register-card">
             <div class="text-center mb-4">
                 <i class="bi bi-person-plus-fill fs-1" style="color:#ec4899;"></i>
-                <h3 class="fw-bold text-dark mt-2">Yuk Daftar Dulu~</h3>
-                <p class="text-muted small">Biar bisa langsung belanja obatnya~</p>
+                <h3 class="fw-bold text-dark mt-2">Apotek Sehat Sentra</h3>
+                <p class="text-muted">Daftarkan diri Anda!❤️</p>
             </div>
 
             <form method="POST" action="{{ route('register') }}">
@@ -113,7 +113,7 @@
             <p class="text-center small-link mt-3">
                 Sudah memiliki akun?
                 <a href="{{ route('login') }}" class="text-decoration-none fw-semibold text-pink" style="color:#ec4899;">
-                    Login
+                    Masuk
                 </a>
             </p>
         </div>

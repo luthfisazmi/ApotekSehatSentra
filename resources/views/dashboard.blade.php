@@ -307,7 +307,7 @@
 
     <!-- Footer -->
     <footer class="text-center">
-        <p>&copy; 2025 Apotek Sehat Sentra — Sehat Bersama Kami!</p>
+        <p>&copy; 2025 Apotek Sehat Sentra — Sehat Bersama Kami!❤️</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

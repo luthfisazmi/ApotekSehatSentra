@@ -104,7 +104,7 @@
 
 <footer>
     <div class="container d-flex justify-content-center align-items-center">
-        <p class="text-center w-100 mb-0">© 2025 Apotek Sehat Sentra — Sehat Bersama Kami ❤️</p>
+        <p class="text-center w-100 mb-0">© 2025 Apotek Sehat Sentra — Sehat Bersama Kami!❤️</p>
     </div>
 </footer>
 
