@@ -2,111 +2,99 @@
 
 @section('content')
     <div class="container py-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
             <h2 class="fw-bold text-primary-emphasis">
                 🛒 Riwayat Transaksi
             </h2>
-            <a href="{{ route('home') }}" class="btn btn-outline-secondary rounded-pill shadow-sm">
-                <i class="bi bi-arrow-left-circle"></i> Kembali
-            </a>
+            <div class="d-flex">
+                <a href="{{ route('home') }}" class="btn btn-outline-secondary rounded-pill shadow-sm me-2">
+                    <i class="bi bi-arrow-left-circle"></i> Kembali
+                </a>
+
+                <!-- Tombol Restore All (Untuk memulihkan semua transaksi yang dihapus) -->
+                <form action="{{ route('transactions.restoreAll') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-warning rounded-pill">
+                        <i class="bi bi-arrow-counterclockwise"></i> Restore All
+                    </button>
+                </form>
+            </div>
         </div>
 
-        @if($transactions->isEmpty())
-            <div class="alert alert-info text-center">
-                Belum ada transaksi.
-            </div>
-        @else
-            <div class="row justify-content-center">
+        <div class="table-responsive shadow-sm rounded-4 overflow-hidden">
+            <table class="table table-hover align-middle text-center table-bordered">
+                <thead class="table-primary text-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nama Pembeli</th>
+                        <th>Email</th>
+                        <th>Produk</th>
+                        <th>Total Harga</th>
+                        <th>Status</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
                 @foreach($transactions as $transaction)
-                    <div class="col-md-8 col-lg-6 mb-4">
-                        <div class="card shadow-lg border-0 rounded-3">
-                            <div class="card-body p-4">
-                                <h5 class="card-title text-primary mb-3">Transaksi #{{ $transaction->id }}</h5>
-                                
-                                <h6 class="fw-semibold">Pembeli:</h6>
-                                <p>{{ $transaction->buyer_name }} | {{ $transaction->email }}</p>
-
-                                <h6 class="fw-semibold">Status:</h6>
-                                <span class="badge bg-warning">{{ $transaction->status }}</span>
-
-                                <h6 class="fw-semibold">Total Harga:</h6>
-                                <p class="fs-5 fw-bold">Rp. {{ number_format($transaction->total_price, 0, ',', '.') }}</p>
-                                
-                                <hr>
-
-                                <h6 class="fw-semibold">Produk yang Dibeli:</h6>
-                                <ul class="list-group list-group-flush">
-                                    @foreach($transaction->transactionItems as $item)
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <strong>{{ $item->product->name }}</strong><br>
-                                                <small>({{ $item->quantity }} pcs)</small>
-                                            </div>
-                                            <span class="badge bg-secondary">Rp. {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}</span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                                
-                                <hr>
-
-                                <h6 class="fw-semibold">Tanggal Transaksi:</h6>
-                                <p>{{ $transaction->created_at->format('d M Y, H:i') }}</p>
-                            </div>
-                        </div>
-                    </div>
+                    <tr>
+                        <td>#{{ $transaction->id }}</td>
+                        <td>{{ $transaction->buyer_name }}</td>
+                        <td>{{ $transaction->email }}</td>
+                        <td class="text-start">
+                            <ul class="list-unstyled mb-0">
+                                @foreach($transaction->transactionItems as $item)
+                                    <li>
+                                        {{ $item->product->name }} <small>({{ $item->quantity }} pcs)</small>
+                                        - Rp {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </td>
+                        <td class="fw-bold">Rp {{ number_format($transaction->total_price, 0, ',', '.') }}</td>
+                        <td>
+                            <span class="badge 
+                                @if($transaction->status == 'Selesai') bg-success 
+                                @elseif($transaction->status == 'Menunggu Konfirmasi') bg-warning 
+                                @else bg-secondary @endif">
+                                {{ $transaction->status }}
+                            </span>
+                        </td>
+                        <td>{{ $transaction->created_at->format('d M Y, H:i') }}</td>
+                        <td>
+                            @if($transaction->trashed())
+                                <!-- Tombol Restore -->
+                                <form action="{{ route('transactions.restore', $transaction->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-sm btn-success rounded-pill">
+                                        <i class="bi bi-arrow-counterclockwise"></i> Restore
+                                    </button>
+                                </form>
+                            @else
+                                <!-- Tombol Hapus -->
+                                <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin mau hapus transaksi ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger rounded-pill">
+                                        <i class="bi bi-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            @endif
+                        </td>
+                    </tr>
                 @endforeach
-            </div>
-        @endif
+            </table>
+        </div>
     </div>
 
-    <!-- Styling untuk card dan halaman -->
     <style>
-        .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-body {
-            padding: 2rem;
-        }
-
-        .badge {
-            font-size: 14px;
-        }
-
-        .list-group-item {
-            border: none;
-            border-bottom: 1px solid #f1f1f1;
-        }
-
-        .list-group-item:last-child {
-            border-bottom: none;
-        }
-
-        .fs-5 {
-            font-size: 1.25rem;
-        }
-
-        .fw-semibold {
-            font-weight: 600;
-        }
-
-        .container {
-            max-width: 1200px;
-        }
-
-        .row {
-            display: flex;
-            justify-content: center;
-        }
-
-        .col-md-8, .col-lg-6 {
-            display: flex;
-            justify-content: center;
-        }
+        .container { flex: 1; }
+        .footer { margin-top: auto; }
+        table th, table td { vertical-align: middle; }
+        ul { padding-left: 1rem; }
+        ul li { font-size: 0.95rem; }
+        .table thead th { font-weight: 600; }
+        .badge { font-size: 14px; }
+        .fw-bold { font-weight: 700; }
     </style>
 @endsection

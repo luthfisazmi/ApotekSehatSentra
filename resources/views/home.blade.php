@@ -188,9 +188,7 @@
                 <li class="nav-item">
                     <a class="nav-link text-black" href="#products">Produk</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-black" href="{{ route('transactions.showHistory') }}">Riwayat</a>
-                </li>
+                <a class="nav-link text-black" href="{{ route('transactions.history') }}">Riwayat</a>
                 <li class="nav-item">
                     <a class="nav-link text-black" href="{{ route('login') }}">Logout</a>
                 </li>

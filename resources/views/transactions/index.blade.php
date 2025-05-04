@@ -164,76 +164,85 @@
 
 {{-- JavaScript --}}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Tambah kuantitas produk di cart
-        window.tambahKuantitas = function(productId) {
-            fetch("{{ route('transactions.updateCart') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                },
-                body: JSON.stringify({
-                    id: productId,
-                    action: 'increase'
-                })
+document.addEventListener('DOMContentLoaded', function () {
+    // Tambah kuantitas produk di cart
+    window.tambahKuantitas = function(productId) {
+        fetch("{{ route('transactions.updateCart') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+            body: JSON.stringify({
+                id: productId,
+                action: 'increase'
             })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById(`qty-${productId}`).textContent = data.updatedQuantity;
-                    document.getElementById(`subtotal-${productId}`).textContent = 'Rp' + new Intl.NumberFormat('id-ID').format(data.updatedSubtotal);
-                    document.getElementById('total-harga').textContent = 'Rp' + new Intl.NumberFormat('id-ID').format(data.total);
-                }
-            });
-        }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById(`qty-${productId}`).textContent = data.updatedQuantity;
+                document.getElementById(`subtotal-${productId}`).textContent = 'Rp' + new Intl.NumberFormat('id-ID').format(data.updatedSubtotal);
+                document.getElementById('total-harga').textContent = 'Rp' + new Intl.NumberFormat('id-ID').format(data.total);
+            }
+        });
+    }
 
-        // Toggle metode pembayaran
-        window.togglePaymentDetails = function(paymentMethod) {
-    // Tampilkan opsi bank hanya jika paymentMethod = 'transfer'
-    document.getElementById('bank-options').style.display = (paymentMethod === 'transfer') ? 'block' : 'none';
-    
-    // Tampilkan opsi COD hanya jika paymentMethod = 'cod'
-    document.getElementById('cod-options').style.display = (paymentMethod === 'cod') ? 'block' : 'none';
-
-    // Reset input
-    if (paymentMethod !== 'cod') {
+    // Toggle metode pembayaran
+    window.togglePaymentDetails = function(paymentMethod) {
+        const bankOptions = document.getElementById('bank-options');
+        const codOptions = document.getElementById('cod-options');
+        const subPayment = document.getElementById('sub_payment');
         const amountPaid = document.getElementById('amount_paid');
-        if (amountPaid) amountPaid.value = '';
-        document.getElementById('change-display').style.display = 'none';
+
+        if (paymentMethod === 'transfer') {
+            bankOptions.style.display = 'block';
+            codOptions.style.display = 'none';
+            subPayment.disabled = false;
+            amountPaid.disabled = true;
+            amountPaid.value = '';
+            document.getElementById('change-display').style.display = 'none';
+        } else if (paymentMethod === 'cod') {
+            codOptions.style.display = 'block';
+            bankOptions.style.display = 'none';
+            subPayment.disabled = true;
+            subPayment.value = '';
+            amountPaid.disabled = false;
+        } else {
+            bankOptions.style.display = 'none';
+            codOptions.style.display = 'none';
+            subPayment.disabled = true;
+            amountPaid.disabled = true;
+            amountPaid.value = '';
+            document.getElementById('change-display').style.display = 'none';
+        }
     }
 
-    // Reset sub_payment jika paymentMethod adalah 'cod'
-    if (paymentMethod === 'cod') {
-        document.getElementById('sub_payment').value = ''; // Reset nilai sub_payment
+    // Kalkulasi kembalian
+    const amountPaidInput = document.getElementById('amount_paid');
+    if (amountPaidInput) {
+        amountPaidInput.addEventListener('input', function () {
+            const totalText = document.getElementById('total-harga').textContent.replace(/[^\d]/g, '');
+            const totalPrice = parseFloat(totalText) || 0;
+            const amountPaid = parseFloat(this.value) || 0;
+            const change = amountPaid - totalPrice;
+
+            const changeInput = document.getElementById('change_amount');
+            if (changeInput) {
+                changeInput.value = change >= 0 ? change.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : '';
+            }
+
+            document.getElementById('change-display').style.display = change >= 0 ? 'block' : 'none';
+        });
     }
-}
 
-
-        // Handle kalkulasi kembalian COD
-        const amountPaidInput = document.getElementById('amount_paid');
-        if (amountPaidInput) {
-            amountPaidInput.addEventListener('input', function () {
-                const totalText = document.getElementById('total-harga').textContent.replace(/[^\d]/g, '');
-                const totalPrice = parseFloat(totalText) || 0;
-                const amountPaid = parseFloat(this.value) || 0;
-                const change = amountPaid - totalPrice;
-
-                const changeInput = document.getElementById('change_amount');
-                if (changeInput) {
-                    changeInput.value = change.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
-                }
-
-                document.getElementById('change-display').style.display = change >= 0 ? 'block' : 'none';
-            });
-        }
-
-        // Tambah ke keranjang
-        window.addToCart = function(productId) {
-            if (!productId) return;
-            window.location.href = `/add-to-cart/${productId}`;
-        }
-    });
+    // Tambah ke keranjang
+    window.addToCart = function(productId) {
+        if (!productId) return;
+        window.location.href = `/add-to-cart/${productId}`;
+    }
+});
 </script>
+
 
 @endsection

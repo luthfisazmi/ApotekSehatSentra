@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
-<>
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apotek Sehat Sentra</title>
@@ -9,7 +10,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -20,8 +20,13 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        body {
-            background-color: #fffdfd;
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .container {
+            flex: 1;
         }
 
         .navbar-custom {
@@ -61,57 +66,58 @@
             background-color: #ffe4f5;
             text-align: center;
             padding: 1rem 0;
-            margin-top: 3rem;
             font-size: 0.95rem;
             color: #555;
+            margin-top: auto;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
     </style>
 </head>
+
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('dashboard') }}">
-                <i class="bi bi-capsule"></i> Apotek Sehat Sentra
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center">
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="{{ route('dashboard') }}">Home</a>
-                    </li> -->
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="{{ route('transactions.index') }}">Transaksi</a>
-                    </li> -->
-                    <li class="nav-item">
-                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                            @csrf
-                            <button class="btn btn-sm btn-pink ms-3 rounded-pill">Logout</button>
-                        </form>
-                    </li>
-                </ul>
+    <div class="content-wrapper">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="{{ route('dashboard') }}">
+                    <i class="bi bi-capsule"></i> Apotek Sehat Sentra
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav align-items-center">
+                        <li class="nav-item">
+                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                @csrf
+                                <button class="btn btn-sm btn-pink ms-3 rounded-pill">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
             </div>
+        </nav>
+
+        <!-- Konten -->
+        <div class="container" style="padding-top: 100px;">
+            @yield('content')
         </div>
-    </nav>
-
-    <!-- Konten -->
-    <div class="container" style="padding-top: 100px;">
-        @yield('content')
+        
+        <!-- Footer -->
+        <footer>
+            <div class="container d-flex justify-content-center align-items-center">
+                <p class="text-center w-100 mb-0">© 2025 Apotek Sehat Sentra — Sehat Bersama Kami!❤️</p>
+            </div>
+        </footer>
     </div>
 
-    <!-- Footer -->
-
-<footer>
-    <div class="container d-flex justify-content-center align-items-center">
-        <p class="text-center w-100 mb-0">© 2025 Apotek Sehat Sentra — Sehat Bersama Kami!❤️</p>
-    </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

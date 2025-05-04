@@ -200,9 +200,9 @@
                     <li class="nav-item">
                         <a class="nav-link text-black" href="{{ route('transactions.index') }}">Checkout</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link text-black" href="#">FAQ</a>
-                    </li>
+                    </li> -->
                     @auth
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center text-black" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

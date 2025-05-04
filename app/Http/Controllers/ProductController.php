@@ -54,8 +54,10 @@ class ProductController extends Controller
     }
 
 
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
+        $product = Product::findOrFail($id);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
@@ -77,7 +79,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
-            'stock' => $request->stock,
+            'stock' => $request->stock,  // Menambahkan stok yang sudah ada dengan stok baru
             'image_url' => $product->image_url
         ]);
 

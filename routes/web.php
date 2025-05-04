@@ -16,6 +16,7 @@ Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('pr
 Route::get('/products/{products}/edit', [ProductController::class, 'edit'])->name('products.edit');
 Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
 
+
 // Route Login
 Route::get('/register', [LoginController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [LoginController::class, 'register']);
@@ -65,17 +66,18 @@ Route::post('/checkout/process', [TransactionController::class, 'processCheckout
 
 Route::get('/transaction-success/{transactionId}', [TransactionController::class, 'success'])->name('transactions.success');
 Route::get('/transaction/{transactionId}/invoice-pdf', [TransactionController::class, 'generatePdfInvoice'])->name('transactions.invoicePdf');
+Route::get('/admin/transactions', [TransactionController::class, 'indexForAdmin'])->name('transactions.admin')->middleware('auth');
 
-
-
-Route::get('/transactions/history', [TransactionController::class, 'history'])->name('transactions.history');
 Route::get('/transactions/history', [TransactionController::class, 'showHistory'])->name('transactions.history');
-Route::get('/transactions/history', [TransactionController::class, 'showHistory'])->name('transactions.showHistory');
 
 
 
 // Restore semua transaksi (opsional, admin)
+Route::delete('/transactions/{id}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
+Route::put('/transactions/{id}/restore', [TransactionController::class, 'restore'])->name('transactions.restore');
 Route::post('/transactions/restore-all', [TransactionController::class, 'restoreAll'])->name('transactions.restoreAll');
+
+
 
 
 Route::get('/cart/cancel', function () {
