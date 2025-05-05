@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -249,6 +248,7 @@ class TransactionController extends Controller
 
     return redirect()->route('transactions.history')->with('success', 'Semua transaksi berhasil dipulihkan.');
 }
+
 
     public function all()
     {

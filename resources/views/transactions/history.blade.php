@@ -3,9 +3,10 @@
 @section('content')
     <div class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="fw-bold text-primary-emphasis">
-                🛒 Riwayat Transaksi
+            <h2 class="mb-4 text-center fw-bold">
+                <i class="bi bi-heart-pulse me-2 text-danger"></i> Riwayat Transaksi 
             </h2>
+
             <div class="d-flex">
                 <a href="{{ route('home') }}" class="btn btn-outline-secondary rounded-pill shadow-sm me-2">
                     <i class="bi bi-arrow-left-circle"></i> Kembali
@@ -15,7 +16,7 @@
                 <form action="{{ route('transactions.restoreAll') }}" method="POST" class="d-inline">
                     @csrf
                     <button type="submit" class="btn btn-warning rounded-pill">
-                        <i class="bi bi-arrow-counterclockwise"></i> Restore All
+                        <i class="bi bi-arrow-counterclockwise"></i> Restore
                     </button>
                 </form>
             </div>
@@ -29,7 +30,8 @@
                         <th>Nama Pembeli</th>
                         <th>Email</th>
                         <th>Produk</th>
-                        <th>Total Harga</th>
+                        <th>Total</th>
+                        <th>Metode</th>
                         <th>Status</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
@@ -51,6 +53,7 @@
                             </ul>
                         </td>
                         <td class="fw-bold">Rp {{ number_format($transaction->total_price, 0, ',', '.') }}</td>
+                        <td class="fw-bold">{{ strtoupper($transaction->payment_method === 'cod' ? 'Cash (COD)' : 'Transfer - ' . strtoupper($transaction->sub_payment)) }}</td>
                         <td>
                             <span class="badge 
                                 @if($transaction->status == 'Selesai') bg-success 
@@ -76,7 +79,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger rounded-pill">
-                                        <i class="bi bi-trash"></i> Hapus
+                                        Hapus
                                     </button>
                                 </form>
                             @endif

@@ -6,6 +6,7 @@
 
     <!-- Import Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Basic CSS -->
     <style>
@@ -115,7 +116,9 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">Transaksi Berhasil! 🎉</h1>
+        <h1 class="mb-4 text-center fw-bold">
+            <i class="bi bi-heart-pulse me-2 text-danger"></i>  Transaksi Berhasil! 🎉
+        </h1>
         <p class="text-center mb-2">Selamat, <strong>{{ $transaction->buyer_name }}</strong>!</p>
 
         <h2 class="mt-4 mb-3" style="font-weight: 600;">🧾 Detail Transaksi</h2>

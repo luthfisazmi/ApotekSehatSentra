@@ -4,8 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Akun</title>
+
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         * {
             font-family: 'Poppins', sans-serif;
@@ -62,9 +70,9 @@
     <div class="register-page">
         <div class="register-card">
             <div class="text-center mb-4">
-                <i class="bi bi-person-plus-fill fs-1" style="color:#ec4899;"></i>
+                <i class="bi bi-heart-pulse fs-1" style="color:#ec4899;"></i> <!-- Ikon bi-heart-pulse lebih besar -->
                 <h3 class="fw-bold text-dark mt-2">Apotek Sehat Sentra</h3>
-                <p class="text-muted">Daftarkan diri Anda!❤️</p>
+                <p class="text-muted">Daftarkan diri Anda!</p>
             </div>
 
             <form method="POST" action="{{ route('register') }}">
@@ -119,6 +127,7 @@
         </div>
     </div>
 
+    <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -57,16 +57,29 @@
         .small-link {
             font-size: 0.9rem;
         }
+
+        /* Adding custom styling for header with icon */
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .header-logo i {
+            font-size: 2rem;
+            color: #ec4899;
+        }
     </style>
 </head>
 <body>
 
 <div class="card-login">
-    <div class="text-center mb-4">
-        <i class="bi bi-capsule-fill fs-1 text-pink" style="color:#ec4899;"></i>
-        <h3 class="fw-bold text-dark mt-2">Apotek Sehat Sentra</h3>
-        <p class="text-muted">Selamat datang!❤️</p>
-    </div>
+        <div class="text-center mb-4 header-logo">
+            <i class="bi bi-heart-pulse"></i>
+            <h3 class="fw-bold text-dark mt-2">Apotek Sehat Sentra</h3>
+        </div>
+
+        <p class="text-muted text-center mt-4">Selamat datang!</p>
 
     @if (session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>

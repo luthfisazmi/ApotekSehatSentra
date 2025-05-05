@@ -32,13 +32,13 @@
                 <!-- Harga -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Harga (Rp)</label>
-                    <input type="number" name="price" class="form-control rounded-3" value="{{ $product->price }}" required>
+                    <input type="number" name="price" class="form-control rounded-3" required onwheel="return false;" value="{{ $product->price }}" required>
                 </div>
 
                 <!-- Stok -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Stok</label>
-                    <input type="number" name="stock" class="form-control rounded-3" value="{{ $product->stock }}" required>
+                    <input type="number" name="stock" class="form-control rounded-3" required onwheel="return false;" value="{{ $product->stock }}" required>
                 </div>
 
                 <!-- Gambar Produk -->

@@ -22,7 +22,9 @@
         <div class="col-lg-8">
             <div class="card shadow-lg border-0">
                 <div class="card-body p-5">
-                    <h2 class="mb-4 text-center fw-bold">🛒 Checkout Keranjang</h2>
+                <h2 class="mb-4 text-center fw-bold">
+                    <i class="bi bi-heart-pulse me-2 text-danger"></i> Checkout Keranjang 🛒
+                </h2>
                     
                     <!-- Hapus Keranjang -->
                     <div class="d-flex justify-content-end mb-4">
@@ -138,9 +140,9 @@
 
                         <!-- Untuk COD -->
                         <div id="cod-options" class="mb-3" style="display: none;">
-                            <label for="amount_paid" class="form-label fw-semibold">Jumlah Uang yang Dibayar</label>
+                            <label for="amount_paid" class="form-label fw-semibold">Jumlah Uang</label>
                             <input type="number" name="amount_paid" id="amount_paid" class="form-control" min="0" placeholder="Masukkan jumlah uang yang dibayar" required>
-                            <small class="text-muted">Masukkan jumlah uang yang dibayar. Kembalian akan dihitung otomatis.</small>
+                            <small class="text-muted">Kembalian akan dihitung otomatis</small>
 
                             <div id="change-display" class="mt-3" style="display: none;">
                                 <label for="change_amount" class="form-label fw-semibold">Kembalian</label>
